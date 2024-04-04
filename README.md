@@ -1,3 +1,3 @@
 # 03_crd
 
-This repository is inteneded to run analysis of variance fora completely randomized design.
+This repository is intended to run analysis of variance for a completely randomized design.

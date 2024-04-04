@@ -79,6 +79,16 @@ ggplot(crd_dfw, aes(x = krate_kgha,
   geom_jitter() +
   theme(legend.position = "none")
 ```
+```{r}
+ggplot(crd_dfw, aes(x = krate_kgha, 
+                    y = yield_kgha,
+                    color = krate_kgha)) +
+  geom_boxplot() +
+  geom_jitter() +
+  facet_grid(.~nrate_kgha)+
+  theme(legend.position = "none")
+```
+
 
 ```{r nk boxplot}
 crd_dfw
@@ -192,7 +202,9 @@ Looks great! Next.
 - Adding a `geom_smooth()` helps with that conclusion. We want to see the smooth line and error bands comprising 0 on the y axis.  
 
 ```{r }
-ggplot(crd_resid, aes(x=.fitted, y=.studresid))+
+ggplot(crd_resid, aes(x=.fitted, 
+                      y=.studresid)
+       )+
   geom_hline(yintercept = 0, color="red")+
   geom_point(shape = 21,
              fill = "purple", 
@@ -235,7 +247,8 @@ Next.
 - Adding a `geom_hline()` at the thresholds helps to visualize and diagnose.   
 
 ```{r}
-ggplot(crd_resid, aes(x=.fitted, y=.studresid))+
+ggplot(crd_resid, aes(x=.fitted,
+                      y=.studresid))+
   geom_hline(yintercept = 0, color="red")+
   geom_point(shape = 21,
              fill = "purple", 
@@ -302,7 +315,7 @@ crd_cld_nk <- cld(crd_means_nk,
 crd_cld_nk
 ```
 
-```{r interaction pwc k inside n}
+```{r interaction pwc k inside n} 
 crd_cld_kn <- cld(crd_means_kn, 
                    reversed=T, 
                    adjust="none",
@@ -329,15 +342,25 @@ Let's plot our results, including both **raw data** (for allowing our audience t
 
 ```{r crd final plot}
 ggplot() +
-  
-  # Raw data and boxplots  
 geom_boxplot(data = crd_dfw,
-             aes(x = trtname, y = yield_kgha))+
-  # Adding letters
+             aes(x = trtname, 
+                 y = yield_kgha))+
+  geom_jitter(data = crd_dfw,
+              aes(x = trtname, y = yield_kgha),
+              shape = 21,
+              size = 3,
+              alpha = .6)+
 geom_label(data = crd_cld_selected,
            aes(x= trtname,
                y= emmean,
-               label = letter))
+               label = letter),
+           fill = "white")+
+  labs(x = "N rate + K rate (kg/ha)",
+         y = "Yield (kg/ha)")+
+  scale_fill_viridis_b()+
+  theme(panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        legend.position = "none")
 ```
 
 Let's make this plot publication ready.  
